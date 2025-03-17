@@ -10,6 +10,7 @@
 </head>
 <body>
     <!-- 顯示最新的手勢狀態 -->
+     <!-- {{ hand_state }} 是 Jinja2 模板變數，FastAPI 會在渲染時替換成實際數據 -->
     <h1>最新手勢狀態: <span id="handState">{{ hand_state }}</span></h1>
     
     <!-- 按鈕用來手動更新手勢狀態，按下後會發送 API 請求 -->

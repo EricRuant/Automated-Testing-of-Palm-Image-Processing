@@ -6,7 +6,7 @@ import time
 # FastAPI API 端點 URL，將手勢數據發送到此端點
 API_URL = "http://127.0.0.1:8000/api/detect_hand"
 
-# 初始化攝影機
+# 初始化攝影機，開啟第一個可用的攝影機設備
 cap = cv2.VideoCapture(0)
 
 # 初始化 MediaPipe 手部偵測模組
@@ -16,11 +16,11 @@ mpDraw = mp.solutions.drawing_utils  # 用於繪製手部關鍵點
 
 # 計算兩點之間的距離
 # 這在手勢辨識時很重要，可以幫助判斷手指是否張開
-
 def distance(x0, y0, x1, y1):
     return ((x1 - x0) ** 2 + (y1 - y0) ** 2) ** 0.5
 
-start_time = time.time()  # 設定計時器
+# 設定計時器，用於 10 秒後自動結束
+start_time = time.time()
 
 while True:
     # 讀取攝影機畫面
@@ -53,11 +53,14 @@ while True:
                 print(f"Detected Hand: {hand_str}")
                 
                 # 發送手勢數據到 FastAPI 伺服器
-                response = requests.post(API_URL, json={"hand_state": hand_state})
-                print("API 回應:", response.json())
+                try:
+                    response = requests.post(API_URL, json={"hand_state": hand_state})
+                    print("API 回應:", response.json())
+                except requests.exceptions.RequestException as e:
+                    print("❌ API 請求失敗:", e)
         
         # 顯示攝影機畫面
-        cv2.imshow('img', img)
+        cv2.imshow('Hand Detection', img)
 
     # 按下 'q' 鍵結束程式，或 10 秒後自動結束
     if cv2.waitKey(1) == ord('q') or time.time() - start_time > 10:

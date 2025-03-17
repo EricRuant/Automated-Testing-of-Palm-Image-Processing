@@ -1,51 +1,52 @@
 name: Run Pytest on Push and PR
 
+# ✅ 設定 GitHub Actions 觸發條件
 on:
   push:
     branches:
-      - main
+      - main  # 當有 push 到 main 分支時執行
   pull_request:
     branches:
-      - main
+      - main  # 當有 PR 合併到 main 分支時執行
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # ✅ 在 Ubuntu 最新版本執行測試
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4  # ✅ 下載專案程式碼
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v4  # ✅ 安裝指定版本的 Python
         with:
-          python-version: '3.12'
+          python-version: '3.12'  # ✅ 使用 Python 3.12
 
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          python -m pip install --upgrade pip  # ✅ 更新 pip
+          pip install -r requirements.txt  # ✅ 安裝專案依賴
 
       - name: Install Chrome
         run: |
-          sudo apt update
-          sudo apt install -y google-chrome-stable chromium-chromedriver
+          sudo apt update  # ✅ 更新套件管理器
+          sudo apt install -y google-chrome-stable chromium-chromedriver  # ✅ 安裝 Chrome 及驅動程式 (Selenium 用)
 
       - name: Start Xvfb (Virtual Display)
-        run: Xvfb :99 -screen 0 1920x1080x24 &
+        run: Xvfb :99 -screen 0 1920x1080x24 &  # ✅ 啟動 Xvfb，支援 Selenium 無頭模式
 
       - name: Set Display
-        run: echo "DISPLAY=:99" >> $GITHUB_ENV
+        run: echo "DISPLAY=:99" >> $GITHUB_ENV  # ✅ 設定 DISPLAY 變數，讓 Selenium 可運行
 
       - name: Start FastAPI server (run in background)
         run: |
-          uvicorn app.main:app --host 127.0.0.1 --port 8000 --log-level debug > logs.log 2>&1 &
+          uvicorn app.main:app --host 127.0.0.1 --port 8000 --log-level debug > logs.log 2>&1 &  # ✅ 背景啟動 FastAPI
           sleep 5  # ✅ 等待 5 秒，確保 FastAPI 啟動
-          curl -I http://127.0.0.1:8000 || (echo "❌ FastAPI 沒有正確啟動！" && exit 1)
+          curl -I http://127.0.0.1:8000 || (echo "❌ FastAPI 沒有正確啟動！" && exit 1)  # ✅ 檢查 FastAPI 是否正常運行
 
       - name: Debug FastAPI logs
         run: |
           ls -l logs.log || echo "❌ logs.log 不存在"
-          cat logs.log || echo "❌ No log file found"
-        
+          cat logs.log || echo "❌ No log file found"  # ✅ 顯示 FastAPI 日誌，方便除錯
+
       - name: Run tests with Pytest
-        run: pytest --maxfail=1 --disable-warnings --tb=short
+        run: pytest --maxfail=1 --disable-warnings --tb=short  # ✅ 執行 Pytest，最多允許 1 次測試失敗
