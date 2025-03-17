@@ -1,0 +1,14 @@
+fastapi 
+uvicorn 
+requests 
+pytest 
+pytest-asyncio 
+pytest-order 
+pytest-timeout 
+selenium 
+httpx 
+opencv-python 
+mediapipe 
+jinja2
+pydantic>=2.0
+webdriver-manager

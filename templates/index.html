@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>手勢偵測</title>
+    
+    <!-- 引入外部 CSS 來美化頁面 -->
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <!-- 顯示最新的手勢狀態 -->
+    <h1>最新手勢狀態: <span id="handState">{{ hand_state }}</span></h1>
+    
+    <!-- 按鈕用來手動更新手勢狀態，按下後會發送 API 請求 -->
+    <button onclick="fetchHandData()">更新手勢狀態</button>
+
+    <script>
+        /**
+         * 向 FastAPI 伺服器發送請求，以獲取最新的手勢狀態。
+         * 這裡模擬發送一組固定的手勢數據到 API，然後更新網頁上的顯示內容。
+         */
+        function fetchHandData() {
+            fetch('/api/detect_hand', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({"hand_state": [1, 0, 1, 0, 1]}) // 模擬手勢數據
+            })
+            .then(response => response.json()) // 解析 API 回應為 JSON
+            .then(data => {
+                // 更新頁面上的手勢狀態顯示
+                document.getElementById('handState').innerText = data.hand_state;
+            });
+        }
+    </script>
+</body>
+</html>

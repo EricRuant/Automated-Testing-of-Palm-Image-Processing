@@ -1,0 +1,37 @@
+/* 設定整體頁面樣式 */
+body {
+    font-family: Arial, sans-serif; /* 設定字體為 Arial，若無則使用 sans-serif */
+    text-align: center; /* 讓內容置中顯示 */
+    margin: 50px; /* 設定外邊距為 50px，增加頁面空白區域 */
+    background-color: #f4f4f4; /* 設定背景顏色為淺灰色 */
+}
+
+/* 設定標題樣式 */
+h1 {
+    color: #333; /* 設定標題文字顏色為深灰色 */
+    font-size: 28px; /* 設定字體大小為 28px */
+}
+
+/* 設定按鈕樣式 */
+button {
+    background-color: #007BFF; /* 設定按鈕顏色為藍色 */
+    color: white; /* 設定文字顏色為白色 */
+    border: none; /* 移除按鈕邊框 */
+    padding: 10px 20px; /* 設定內邊距為 10px（垂直）20px（水平） */
+    font-size: 18px; /* 設定字體大小為 18px */
+    cursor: pointer; /* 讓滑鼠游標變成手指形狀，表示可點擊 */
+    border-radius: 5px; /* 設定按鈕圓角為 5px */
+    transition: background 0.3s; /* 設定顏色變化的過渡效果，時間為 0.3 秒 */
+}
+
+/* 當滑鼠懸停於按鈕上時，變更背景顏色 */
+button:hover {
+    background-color: #0056b3;
+}
+
+/* 設定手勢狀態的顯示樣式 */
+#handState {
+    font-size: 24px; /* 設定字體大小為 24px */
+    font-weight: bold; /* 設定字體加粗 */
+    color: #28a745; /* 設定顏色為綠色 */
+}
